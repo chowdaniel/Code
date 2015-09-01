@@ -81,13 +81,13 @@ if __name__ == "__main__":
     end = datetime.datetime.now()
     start = datetime.datetime(end.year-2, end.month, end.day)
     
-    XEL = 34.
-    CMS = 34.39
+    XEL = 33.14
+    CMS = 32.239
     PNC = 97.66
     STI = 43.704
     BMY = 67.045
     CERN = 69.68
     
-    run_test('XEL','CMS',start,end,10,XEL,CMS,32.908462,32.99)
+    run_test('XEL','CMS',start,end,10,XEL,CMS)
 #    run_test('PNC','STI',start,end,10,PNC,STI)
 #    run_test('BMY','CERN',start,end,10,BMY,CERN)

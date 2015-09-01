@@ -1,16 +1,14 @@
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
+#!/usr/bin/python
+
 import urllib2
 import datetime
-import pandas as pd
-
 
 def run(symbol,start,end):
     
     url = "http://ichart.finance.yahoo.com/table.csv?s=%s&a=%s&b=%s&c=%s&d=%s&e=%s&f=%s" % (symbol, start.month-1, start.day, start.year, end.month-1, end.day, end.year)
     data = urllib2.urlopen(url)
-    
-    dates = []
+
+    dates = []    
     close = []
     temp1 = []
     
@@ -21,20 +19,12 @@ def run(symbol,start,end):
         
     dates.reverse()
     dates.pop()
-    
-    counter = 0
-    while counter < len(dates):
-        dates[counter] = datetime.datetime.strptime(dates[counter], "%Y-%m-%d")
-        counter = counter + 1
 
     temp1.reverse()
     temp1.pop()
     
     for i in temp1:
         close.append(float(i))
- 
-    df = pd.DataFrame(index=dates)
-    df[symbol] = close
 
     counter = 0
     fifty = []
@@ -63,52 +53,36 @@ def run(symbol,start,end):
             ave = total/20
             twenty.append(ave)
         counter += 1
-       
-    df['50MA'] = fifty
-    df['20MA'] = twenty
-
-    months = mdates.MonthLocator() # every month
-    fig, ax = plt.subplots()
-    ax.plot(df.index, df[symbol], label="Price")
-    ax.plot(df.index, df['50MA'],'m', label='50MA')
-    ax.plot(df.index, df["20MA"],'y', label='20MA')
-    ax.xaxis.set_major_locator(months)
-    ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
-    ax.set_xlim(start,end)
-    ax.grid(True)
-    fig.autofmt_xdate()
-    plt.xlabel('Month/Year')
-    plt.ylabel('Price ($)')
-    plt.title('MA Plot')
-    plt.legend()
-    plt.plot(df[symbol])
-    plt.show()
-            
-
-if __name__ == '__main__':
-    start = datetime.datetime(2014, 1, 1)
-    end = datetime.datetime.now()
+        
+    counter = 0
+    data = []
     
-    stock = "Y92.SI"
-    run(stock,start,end)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    while counter < len(dates):
+        temp = [dates[counter],twenty[counter],fifty[counter]]
+        counter += 1
+        data.append(temp)
+        
+    data.reverse()
+    out = []
+    
+    if data[0][1] > data[0][2]:
+        #20MA above 40MA
+        counter = 1
+        while counter < len(data):
+            if data[counter][1] < data[counter][2]:
+                break
+            counter += 1
+        out.append(symbol)
+        cross = data[counter][0]
+        cross = cross.split('-')
+        cross = cross[2] + '/' + cross[1] + '/' + cross[0]
+        out.append(cross)
+        out.append(counter)
+    
+    return out
+        
+if __name__ == '__main__':
+    end = datetime.datetime.now()
+    start = datetime.datetime(end.year-1, 1, end.month)
+    a = run("588.SI",start,end)
+    print a
