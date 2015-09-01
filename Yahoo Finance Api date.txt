@@ -1,0 +1,1 @@
+http://ichart.finance.yahoo.com/table.csv?s=$$Ticker$$&a=$$Day$$&b=$$Month$$&c=$$YEAR$$&d=$$DAY$$&e=$$MONTH$$&f=$$YEAR$$

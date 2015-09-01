@@ -1,0 +1,2 @@
+v1 - Based on average over whole duration
+v2 - 10 day moving average is used instead

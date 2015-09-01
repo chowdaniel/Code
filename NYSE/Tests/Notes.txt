@@ -1,0 +1,5 @@
+Bollinger Bands - Plots graph and bollinger bands
+Full Test - Runs CADF and Hurst test and calculates half-life of pair
+SP500 - Generates list of stocks in S&P500
+MeanSD - Plots straight MA with CADF and Hurst Test on a pair
+SingleStock - CADF and Hurst on a Single Stock
