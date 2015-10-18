@@ -17,9 +17,12 @@ def run_test(stock1,stock2,start,end,lookback,n1,n2,p1=None,p2=None):
     df[stock2] = second["Adj Close"]
     
     res = ols(y=df[stock2], x=df[stock1])
+#    print res.r2
     beta_hr = res.beta.x
     
-    df["res"] = df[stock2] - beta_hr*df[stock1]          
+    df["res"] = df[stock2] - beta_hr*df[stock1]    
+
+    print stock2 + " - " + str(beta_hr) + "*" + stock1      
     
     results = df["res"].tolist()
     
@@ -44,6 +47,8 @@ def run_test(stock1,stock2,start,end,lookback,n1,n2,p1=None,p2=None):
     df['sd'] = sd
     df['band1'] = df['mean'] + df['sd']
     df['band-1'] = df['mean'] - df['sd']
+    df['band2'] = df['mean'] + 1.5*df['sd']
+    df['band-2'] = df['mean'] - 1.5*df['sd']
     
     prev = 0
     curr = 0
@@ -60,6 +65,8 @@ def run_test(stock1,stock2,start,end,lookback,n1,n2,p1=None,p2=None):
     ax.plot(df.index, df["mean"],'k')
     ax.plot(df.index, df["band1"],'r')
     ax.plot(df.index, df["band-1"],'r')
+    ax.plot(df.index, df["band2"],'y')
+    ax.plot(df.index, df["band-2"],'y')
     if curr != 0:
         ax.plot(df.index, df["curr"],'y')
     if prev != 0:
@@ -81,8 +88,8 @@ if __name__ == "__main__":
     end = datetime.datetime.now()
     start = datetime.datetime(end.year-2, end.month, end.day)
     
-    XEL = 33.14
-    CMS = 32.239
+    XEL = 36.16
+    CMS = 35.83
     PNC = 97.66
     STI = 43.704
     BMY = 67.045
